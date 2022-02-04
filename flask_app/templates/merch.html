@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Merch</title>
+  <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+
+</head>
+
+<body>
+  <header class="flex justify-between navbar">
+    {# Logo / Name #}
+    <div class="flex logo-container">
+      <img id="nav-logo" src="../static/img/CodeCastlePNG.png" alt="Logo">
+      <div class="nav-name">
+        <h2>Castle</h2>
+        <h2>Crusaders</h2>
+      </div>
+    </div>
+    {# Tab selections #}
+    <div class="flex justify-evenly align-center">
+      <a class="nav-options" href="/">Home</a>
+      <a class="nav-options nav-selected" href="/merch">Merch</a>
+      <a class="nav-options" href="/team">The Team</a>
+      <a class="nav-options" href="">Other</a>
+    </div>
+    {# Schedule Option/Login/Logout #}
+    <div class="flex align-center">
+
+      {% if "uuid" not in session %}
+      <button class="nav-btns" id="modalBtn">Login/Register</button>
+      {% else %}
+      <form action="/logout">
+        <button class="nav-btns">Logout</button>
+      </form>
+      {% endif %}
+
+      {% if "admin" not in session %}
+      <form action="/cart">
+        <button class="nav-btns cart-btn">Cart</button>
+      </form>
+      {% endif %}
+
+      {% if "admin" in session %}
+      <button class="nav-btns">Admin Page</button>
+      <button class="nav-btns">+ Add Merch</button>
+      {% endif %}
+
+      <button class="nav-btns">Schedule</button>
+    </div>
+  </header>
+
+  <main class="flex flex-column">
+
+    <section class="flex justify-evenly align-center">
+
+      <div class="h-merch flex justify-center align-center" id="h-merch">
+        <a href="" class="merch-title">Hoodies</a>
+      </div>
+
+
+      <div class="t-merch flex justify-center align-center" id="t-merch">
+        <a href="" class="merch-title">Tees</a>
+      </div>
+
+
+      <div class="o-merch flex justify-center align-center" id="o-merch">
+        <a href="" class="merch-title">Other</a>
+      </div>
+
+
+      <div class="a-merch flex justify-center align-center" id="a-merch">
+        <a href="" class="merch-title">Shop All</a>
+      </div>
+
+
+    </section>
+
+
+    <div class="flex align-center">
+      <div class="pg-divide-r breaker"></div>
+      <h1 class="merch-browse-title">Browse Collection</h1>
+      <div class="pg-divide-l breaker"></div>
+    </div>
+
+    <Section class="merch-area flex">
+      <div class="filter-col flex flex-column">
+        <form action="/merch/filter" method=post class="flex flex-column">
+          <h1 class="filter-title">Filter</h1>
+
+          <div>
+            {% if session["filter"] == '1' %}
+            <input class="filter-i" type="radio" id="hoodie" name="filter" value="1" checked>
+            {% else %}
+            <input class="filter-i" type="radio" id="hoodie" name="filter" value="1">
+            {% endif %}
+            <label class="filter-l" for="hoodie">Hoodies</label>
+          </div>
+
+          <div>
+            {% if session["filter"] == '2' %}
+            <input class="filter-i" type="radio" id="t_shirt" name="filter" value="2" checked>
+            {% else %}
+            <input class="filter-i" type="radio" id="t_shirt" name="filter" value="2">
+            {% endif %}
+            <label class="filter-l" for="t_shirt">T-Shirts</label>
+          </div>
+          <div>
+            {% if session["filter"] == '3' %}
+            <input class="filter-i" type="radio" id="other" name="filter" value="3" checked>
+            {% else %}
+            <input class="filter-i" type="radio" id="other" name="filter" value="3">
+            {% endif %}
+            <label class="filter-l" for="other">"Other" Items</label>
+          </div>
+          <div>
+            <input class="filter-i" type="radio" id="all" name="filter" value="4">
+            <label class="filter-l" for="all">All Items</label>
+          </div>
+
+          <input class="filter-btn" type="submit" value="Filter">
+        </form>
+      </div>
+
+
+      <div class="product-col">
+
+        {% for product in products %}
+
+
+        {% if product.id %4 == 0 %}
+        <br>
+        {% endif %}
+
+
+
+        <div class="product-info">
+          <img class="product-img" src="../static/img/products/{{product.id}}.png">
+          <form action="/cart/add/{{product.id}}">
+            <h1 class="product-name">{{product.name}}</h1>
+            {% if product.category_id != 3 %}
+            <select class="product-size" name="size">
+              <option selected disabled>--Select Size--</option>
+              <option value="small">Small</option>
+              <option value="medium">Medium</option>
+              <option value="large">Large</option>
+            </select>
+            {% endif %}
+
+            <div class="flex justify-center product-quantity">
+              <label>Quantity:</label>
+              <select name="quantity" class="quantity-selector">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select>
+            </div>
+            <p class="product-price">${{product.price}}.00</p>
+
+
+            <a href="/cart/add/{{product.id}}" class="nav-btns cart-add-btn">Add To Cart</a>
+          </form>
+        </div>
+        {% endfor %}
+
+
+
+      </div>
+    </Section>
+
+
+
+  </main>
+
+
+
+
+  {# Log in and register areas #}
+
+  <div id="myModal" class="l-r-modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2 class="modal-info-title">Login Or Register</h2>
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <div class="flex align-center flex-column">
+        {% for message in messages %}
+        <p class="warning">{{message}}</p>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% endwith %}
+      <div class="home-register flex">
+
+        <p class='login-info'>If you already Have an Account you can log in here to pick up where you left off,
+          otherwise if
+          you're new here, when you create an account on our site you'll automatically be signed up for future
+          giveaways which include chances
+          to
+          win official merch and other prizes. You'll also be notified on when events get finalized and scheduled.
+          Also
+          accounts will be needed to make an online purchase on this site.
+        </p>
+
+
+        <div class='login-container'>
+          <h2 style="text-align:center;">Login:</h2>
+
+          <form action="/verify/login" method='post' class='flex flex-column align-center'>
+            <label class='form-l'>Email:</label>
+            <input class='form-i' type="text" name="email">
+            <label class='form-l'>Password:</label>
+            <input class='form-i' type="password" name="password">
+            <input type="submit" value="Login" class='form-btn'>
+          </form>
+
+        </div>
+
+        <div class='register-container'>
+          <h2 style="text-align:center;">Register:</h2>
+
+          <form action="/verify/register" method='post' class='flex flex-column align-center'>
+            <label class='form-l'>First Name:</label>
+            <input class='form-i' type="text" name="first_name">
+            <label class='form-l'>Last Name:</label>
+            <input class='form-i' type="text" name="last_name">
+            <label class='form-l'>Email:</label>
+            <input class='form-i' type="text" name="email">
+            <label class='form-l'>Password:</label>
+            <input class='form-i' type="password" name="password">
+            <label class='form-l'>Confirm Password:</label>
+            <input class='form-i' type="password" name="confirm_password">
+            <input type="submit" value="Register" class='form-btn'>
+          </form>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+
+
+  <footer class="flex footer-container justify-between">
+    <section class="flex">
+      <div class="flex flex-column footer-col">
+        <h3 class='footer-title'>Store</h3>
+        <a href="" class="footer-lnk">Shop Collection</a>
+        <a href="" class="footer-lnk">Team Wear</a>
+        <a href="" class="footer-lnk">FAQ</a>
+      </div>
+      <div class="flex flex-column footer-col">
+        <h3 class='footer-title'>Castle Crusaders</h3>
+        <a href="" class="footer-lnk">Partnerships</a>
+        <a href="" class="footer-lnk">Contact</a>
+        <a href="" class="footer-lnk">About</a>
+      </div>
+      <div class="flex flex-column footer-col">
+        <h3 class='footer-title'>About</h3>
+        <a href="" class="footer-lnk">Made By: Adam Ubel</a>
+        <a href="" class="footer-lnk">LinkedIn</a>
+        <a href="" class="footer-lnk">Github</a>
+      </div>
+    </section>
+    <div class="flex flex-column justify-center">
+      <h2 class="footer-name">Castle<br>Crusaders</h2>
+    </div>
+  </footer>
+
+
+  <script src="../static/js/merch.js"></script>
+
+</body>
+
+</html>

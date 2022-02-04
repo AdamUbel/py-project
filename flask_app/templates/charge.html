@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Placed</title>
+  <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+</head>
+
+<body>
+
+  <header class="flex justify-between navbar">
+    {# Logo / Name #}
+    <div class="flex logo-container">
+      <img id="nav-logo" src="../static/img/CodeCastlePNG.png" alt="Logo">
+      <div class="nav-name">
+        <h2>Castle</h2>
+        <h2>Crusaders</h2>
+      </div>
+    </div>
+    {# Tab selections #}
+    <div class="flex justify-evenly align-center">
+      <a class="nav-options" href="/">Home</a>
+      <a class="nav-options" href="/merch">Merch</a>
+      <a class="nav-options" href="/team">The Team</a>
+      <a class="nav-options" href="">Other</a>
+    </div>
+    {# Schedule Option/Login/Logout #}
+    <div class="flex align-center">
+      {% if "uuid" not in session %}
+      <button class="nav-btns" id="modalBtn">Login/Register</button>
+      {% else %}
+      <form action="/logout">
+        <button class="nav-btns">Logout</button>
+      </form>
+      {% endif %}
+      {% if "admin" in session %}
+      <button class="nav-btns">Admin Page</button>
+      {% endif %}
+      <button class="nav-btns">Schedule</button>
+    </div>
+  </header>
+
+  <div class="home-banner team-banner">Order Placed Successfully</div>
+
+  <main class='flex flex-column align-center thank-you-container'>
+
+    <h1 class="order-conf">Order for ${{total}}.00 Successful</h1>
+    <h1 class="thankyou">Thank You {{customer.full_name}}!!</h1>
+    <h1 class="thankyou verify-sent">Verify email sent to: {{customer.email}}</h1>
+    <a class="charge-btn" href="/">Return Home</a>
+  </main>
+
+
+  <footer class="flex footer-container justify-between cart-footer">
+    <section class="flex">
+      <div class="flex flex-column footer-col">
+        <h3 class='footer-title'>Store</h3>
+        <a href="" class="footer-lnk">Shop Collection</a>
+        <a href="" class="footer-lnk">Team Wear</a>
+        <a href="" class="footer-lnk">FAQ</a>
+      </div>
+      <div class="flex flex-column footer-col">
+        <h3 class='footer-title'>Castle Crusaders</h3>
+        <a href="" class="footer-lnk">Partnerships</a>
+        <a href="" class="footer-lnk">Contact</a>
+        <a href="" class="footer-lnk">About</a>
+      </div>
+      <div class="flex flex-column footer-col">
+        <h3 class='footer-title'>About</h3>
+        <a href="" class="footer-lnk">Made By: Adam Ubel</a>
+        <a href="" class="footer-lnk">LinkedIn</a>
+        <a href="" class="footer-lnk">Github</a>
+      </div>
+    </section>
+    <div class="flex flex-column justify-center">
+      <h2 class="footer-name">Castle<br>Crusaders</h2>
+    </div>
+  </footer>
+
+
+</body>
+
+</html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+
+</head>
+
+<body>
+
+  {# NOTE NAVBAR #}
+
+  <header class="flex justify-between navbar">
+    {# Logo / Name #}
+    <div class="flex logo-container">
+      <img id="nav-logo" src="../static/img/CodeCastlePNG.png" alt="Logo">
+      <div class="nav-name">
+        <h2>Castle</h2>
+        <h2>Crusaders</h2>
+      </div>
+    </div>
+    {# Tab selections #}
+    <div class="flex justify-evenly align-center">
+      <a class="nav-options nav-selected" href="">Home</a>
+      <a class="nav-options" href="/merch">Merch</a>
+      <a class="nav-options" href="/team">The Team</a>
+      <a class="nav-options" href="">Other</a>
+    </div>
+    {# Schedule Option/Login/Logout #}
+    <div class="flex align-center">
+      {% if "uuid" not in session %}
+      <button class="nav-btns" id="modalBtn">Login/Register</button>
+      {% else %}
+      <form action="/logout">
+        <button class="nav-btns">Logout</button>
+      </form>
+      {% endif %}
+      {% if "admin" in session %}
+      <button class="nav-btns">Admin Page</button>
+      {% endif %}
+      <button class="nav-btns">Schedule</button>
+    </div>
+  </header>
+
+  {# NOTE BODY CONTENT #}
+
+  <div class="home-banner"></div>
+
+  <main class="flex flex-column">
+
+
+    <section class="homepage-content-m">
+      <div class="home-info">
+        <h2 class="home-info-title">Who Are The Castle Crusaders?</h2>
+        <p class="home-info-para">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores ut repellat ipsam
+          doloribus beatae magni,
+          corporis unde, reprehenderit laboriosam eius, totam praesentium cum aliquid? Et esse similique eveniet
+          quibusdam
+          incidunt.</p>
+        <p class="home-info-para">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores ut repellat ipsam
+          doloribus beatae magni,
+          corporis unde, reprehenderit laboriosam eius, totam praesentium cum aliquid? Et esse similique eveniet
+          quibusdam
+          incidunt.</p>
+        <p class="home-info-para">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores ut repellat ipsam
+          doloribus beatae magni,
+          corporis unde, reprehenderit laboriosam eius, totam praesentium cum aliquid? Et esse similique eveniet
+          quibusdam
+          incidunt.</p>
+      </div>
+    </section>
+
+
+
+    <div class="pg-divide-l"></div>
+
+    <section class="homepage-content-l">
+      <div class="home-info">
+        <h2 class="home-info-title">About</h2>
+        <p class="home-info-para">Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum exercitationem, quae
+          nostrum fugit autem
+          voluptate. Vitae delectus reiciendis, nulla consequuntur, minus cumque dolore quod perferendis quidem eligendi
+          laboriosam dicta ab.</p>
+        <p class="home-info-para">Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum exercitationem, quae
+          nostrum fugit autem
+          voluptate. Vitae delectus reiciendis, nulla consequuntur, minus cumque dolore quod perferendis quidem eligendi
+          laboriosam dicta ab.</p>
+      </div>
+    </section>
+
+    <div class="pg-divide-r"></div>
+    {# Righ page Column #}
+    <section class="homepage-content-r">
+      <div class="home-info">
+        <h2 class="home-info-title">Why</h2>
+        <p class="home-info-para">Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum exercitationem, quae
+          nostrum fugit autem
+          voluptate. Vitae delectus reiciendis, nulla consequuntur, minus cumque dolore quod perferendis quidem eligendi
+          laboriosam dicta ab.</p>
+        <p class="home-info-para">Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum exercitationem, quae
+          nostrum fugit autem
+          voluptate. Vitae delectus reiciendis, nulla consequuntur, minus cumque dolore quod perferendis quidem eligendi
+          laboriosam dicta ab.</p>
+      </div>
+    </section>
+
+
+    <div class="pg-divide-blue"></div>
+
+    <section class='homepage-content-m flex flex-column'>
+      <h2 class="home-info-title teams-title">Our Current Teams</h2>
+      <div class="flex justify-evenly">
+        <img src="../static/img/lol-logo.png" alt="League Of Legends Logo" class="team-logo" onclick="currentSlide(1)">
+        <img src=" ../static/img/apex-logo.png" alt="Apex Legends Logo" class="team-logo" onclick="currentSlide(2)">
+        <img src="../static/img/valorant-logo.png" alt="Valorant Logo" class="team-logo" onclick="currentSlide(3)">
+      </div>
+
+
+      <section class="slideshow">
+
+        <div class="slideshow-container">
+
+          <!-- Full-width images with number and caption text -->
+          <div class="my-slides fade">
+
+            <img src="../static/img/lol-banner.jpg" style="width:100%" class="slide-img">
+
+          </div>
+
+          <div class="my-slides fade">
+
+            <img src="../static/img/apex-banner.jpg" style="width:100%" class="slide-img">
+
+          </div>
+
+          <div class="my-slides fade">
+
+            <img src="../static/img/val-banner.jpg" style="width:100%" class="slide-img">
+
+          </div>
+
+          <!-- Next and previous buttons -->
+          <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+          <a class="next" onclick="plusSlides(1)">&#10095;</a>
+        </div>
+        <br>
+
+        <!-- The dots/circles -->
+        <div style="text-align:center">
+          <span class="dot" onclick="currentSlide(1)"></span>
+          <span class="dot" onclick="currentSlide(2)"></span>
+          <span class="dot" onclick="currentSlide(3)"></span>
+        </div>
+      </section>
+
+
+    </section>
+
+
+
+    {# NOTE Log in and register areas #}
+
+    <div id="myModal" class="l-r-modal">
+
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 class="modal-info-title">Login Or Register</h2>
+        <div class="home-register flex">
+
+          <p class='login-info'>If you already Have an Account you can log in here to pick up where you left off,
+            otherwise if
+            you're new here, when you create an account on our site you'll automatically be signed up for future
+            giveaways which include chances
+            to
+            win official merch and other prizes. You'll also be notified on when events get finalized and scheduled.
+            Also
+            accounts will be needed to make an online purchase on this site.
+          </p>
+          {% with messages = get_flashed_messages() %}
+          {% if messages %}
+          <div class="flex flex-column align-center">
+            {% for message in messages %}
+            <p class="warning">{{message}}</p>
+            {% endfor %}
+          </div>
+          {% endif %}
+          {% endwith %}
+
+          <div class='login-container'>
+            <h2 style="text-align:center;">Login:</h2>
+
+            <form action="/verify/login" method='post' class='flex flex-column align-center'>
+              <label class='form-l'>Email:</label>
+              <input class='form-i' type="text" name="email">
+              <label class='form-l'>Password:</label>
+              <input class='form-i' type="password" name="password">
+              <input type="submit" value="Login" class='form-btn'>
+            </form>
+
+          </div>
+
+          <div class='register-container'>
+            <h2 style="text-align:center;">Register:</h2>
+
+            <form action="/verify/register" method='post' class='flex flex-column align-center'>
+              <label class='form-l'>First Name:</label>
+              <input class='form-i' type="text" name="first_name">
+              <label class='form-l'>Last Name:</label>
+              <input class='form-i' type="text" name="last_name">
+              <label class='form-l'>Email:</label>
+              <input class='form-i' type="text" name="email">
+              <label class='form-l'>Password:</label>
+              <input class='form-i' type="password" name="password">
+              <label class='form-l'>Confirm Password:</label>
+              <input class='form-i' type="password" name="confirm_password">
+              <input type="submit" value="Register" class='form-btn'>
+            </form>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+
+
+  </main>
+
+
+  <footer class="flex footer-container justify-between">
+    <section class="flex">
+      <div class="flex flex-column footer-col">
+        <h3 class='footer-title'>Store</h3>
+        <a href="/merch" class="footer-lnk">Shop Collection</a>
+        <a href="" class="footer-lnk">Team Wear</a>
+        <a href="" class="footer-lnk">FAQ</a>
+      </div>
+      <div class="flex flex-column footer-col">
+        <h3 class='footer-title'>Castle Crusaders</h3>
+        <a href="" class="footer-lnk">Partnerships</a>
+        <a href="" class="footer-lnk">Contact</a>
+        <a href="" class="footer-lnk">About</a>
+      </div>
+      <div class="flex flex-column footer-col">
+        <h3 class='footer-title'>About</h3>
+        <a href="" class="footer-lnk">Made By: Adam Ubel</a>
+        <a href="" class="footer-lnk">LinkedIn</a>
+        <a href="" class="footer-lnk">Github</a>
+      </div>
+    </section>
+    <div class="flex flex-column justify-center">
+      <h2 class="footer-name">Castle<br>Crusaders</h2>
+    </div>
+  </footer>
+
+
+  <script src="../static/js/script.js"></script>
+</body>
+
+</html>

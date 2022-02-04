@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart</title>
+  <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+</head>
+
+<body>
+  <header class="flex justify-between navbar">
+    {# Logo / Name #}
+    <div class="flex logo-container">
+      <img id="nav-logo" src="../static/img/CodeCastlePNG.png" alt="Logo">
+      <div class="nav-name">
+        <h2>Castle</h2>
+        <h2>Crusaders</h2>
+      </div>
+    </div>
+    {# Tab selections #}
+    <div class="flex justify-evenly align-center">
+      <a class="nav-options" href="/">Home</a>
+      <a class="nav-options" href="/merch">Merch</a>
+      <a class="nav-options" href="/team">The Team</a>
+      <a class="nav-options" href="">Other</a>
+    </div>
+    {# Schedule Option/Login/Logout #}
+    <div class="flex align-center">
+      {% if "uuid" not in session %}
+      <button class="nav-btns" id="modalBtn">Login/Register</button>
+      {% else %}
+      <form action="/logout">
+        <button class="nav-btns">Logout</button>
+      </form>
+      {% endif %}
+      {% if "admin" in session %}
+      <button class="nav-btns">Admin Page</button>
+      {% endif %}
+      <button class="nav-btns">Schedule</button>
+    </div>
+  </header>
+
+  <div class="home-banner team-banner">{{user.full_name}}'s Cart</div>
+
+
+
+
+
+  <main class="flex">
+
+
+    <div class="cart-products-col flex flex-column">
+      {% for product in cart.cart %}
+      {% if not product.name == None %}
+      <div class="cart-product flex justify-between">
+
+        <img class="cart-product-img" src="../static/img/products/{{product.id}}.png">
+        <div class="flex flex-column cart-item-info">
+          <h1 class="cart-name">{{product.name}}</h1>
+          <h2 class="cart-price-l">Price:</h2>
+          <h2 class="cart-price">${{product.price}}.00</h2>
+        </div>
+        <a class="remove-product" href="/cart/remove/{{product.id}}">Remove</a>
+      </div>
+      {% endif %}
+      {% endfor %}
+
+    </div>
+
+    <div class="flex flex-column cart-total-col">
+      <div class="cart-total-info">
+        <h1 class="checkout-title">Checkout</h1>
+        <div class=cart-total>
+          <form action="/charge/verify" method="post">
+
+
+
+            <div class="flex flex-column align-center">
+              <h2 class="cart-name">Shipping Adress:</h2>
+              <label class='form-l'>Street:</label>
+              <input class='form-i' type="text" name="street" value="{{user.address[0].street}}">
+              <label class='form-l'>City:</label>
+              <input class='form-i' type="text" name="city" value="{{user.address[0].city}}">
+              <label class='form-l'>State:</label>
+              <input class='form-i' type="text" name="state" value="{{user.address[0].state}}">
+              <label class='form-l'>Zip:</label>
+              <input class='form-i zip-form' type="text" name="zip" value="{{user.address[0].zip}}">
+            </div>
+
+            <p>Sales Tax: {{"$%.2f"|format(cart.cart_total|round(1)|int * 0.09) }}</p>
+            <p>Current Total: ${{'%0.2f'|format(cart.cart_total|float + cart.cart_total|round(1)|int * 0.09)}}</p>
+
+
+
+
+
+            <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="{{ key }}"
+              data-description="{{user.full_name}}'s Purchase"
+              data-amount="{{(cart.cart_total|float + cart.cart_total|round(1)|int * 0.09)*100}}" data-locale="auto"
+              data-email="{{user.email}}">
+            </script>
+            <script>
+              document.getElementsByClassName("stripe-button-el")[0].style.display = 'none';
+            </script>
+            <button type="submit" class="checkout-btn">Place Order</button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+
+
+
+
+
+  <footer class="flex footer-container justify-between cart-footer">
+    <section class="flex">
+      <div class="flex flex-column footer-col">
+        <h3 class='footer-title'>Store</h3>
+        <a href="" class="footer-lnk">Shop Collection</a>
+        <a href="" class="footer-lnk">Team Wear</a>
+        <a href="" class="footer-lnk">FAQ</a>
+      </div>
+      <div class="flex flex-column footer-col">
+        <h3 class='footer-title'>Castle Crusaders</h3>
+        <a href="" class="footer-lnk">Partnerships</a>
+        <a href="" class="footer-lnk">Contact</a>
+        <a href="" class="footer-lnk">About</a>
+      </div>
+      <div class="flex flex-column footer-col">
+        <h3 class='footer-title'>About</h3>
+        <a href="" class="footer-lnk">Made By: Adam Ubel</a>
+        <a href="" class="footer-lnk">LinkedIn</a>
+        <a href="" class="footer-lnk">Github</a>
+      </div>
+    </section>
+    <div class="flex flex-column justify-center">
+      <h2 class="footer-name">Castle<br>Crusaders</h2>
+    </div>
+  </footer>
+
+
+  <script src="../static/js/merch.js"></script>
+
+
+
+
+
+</body>
+
+</html>
